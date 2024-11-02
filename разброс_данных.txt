@@ -1,0 +1,7 @@
+from math import *
+
+a = [1, 2, 3, 4, 15, 1000]
+
+mid = sum(a) / len(a)
+total = ((1 / len(a)) * sum([(i - mid) ** 2 for i in a])) ** 0.5
+print([(i - mid) / total for i in a])

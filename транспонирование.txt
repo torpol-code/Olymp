@@ -1,0 +1,23 @@
+# Определим матрицу
+matrix = [
+    [1, 2],
+    [4, 5],
+    [7, 8]
+]
+
+# Определяем размеры матрицы
+rows = len(matrix)
+cols = len(matrix[0])
+
+# Создаем пустую матрицу для результата с измененными размерами
+transposed = [[0 for _ in range(rows)] for _ in range(cols)]
+
+# Выполняем транспонирование
+for i in range(rows):
+    for j in range(cols):
+        transposed[j][i] = matrix[i][j]
+
+# Выводим результат
+print("Транспонированная матрица:")
+for row in transposed:
+    print(row)
