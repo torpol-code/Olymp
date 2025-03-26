@@ -4,9 +4,8 @@ using namespace std;
 
 // #pragma GCC optimize ("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
-#define int long long
 
-const int len = 32;
+const int len = 30;
 string empty_string = bitset<len>(0).to_string();
 struct segtree {
     array<int, len> empty_array;
@@ -23,9 +22,14 @@ struct segtree {
     int n;
 
     void push(int x) {
-        for (int i = 0; i < len; i++) {
-            tree[tree[x].l].add[i] = (tree[x].add[i] != tree[tree[x].l].add[i] ? '1' : '0');
-            tree[tree[x].r].add[i] = (tree[x].add[i] != tree[tree[x].r].add[i] ? '1' : '0');
+        if (tree[x].l != -1) {
+            for (int i = 0; i < len; i++) {
+                tree[tree[x].l].add[i] = (tree[x].add[i] != tree[tree[x].l].add[i] ? '1' : '0');
+            }
+        } if (tree[x].r != -1) {
+            for (int i = 0; i < len; i++) {
+                tree[tree[x].r].add[i] = (tree[x].add[i] != tree[tree[x].r].add[i] ? '1' : '0');
+            }
         }
 
         for (int i = 0; i < len; i++) {
@@ -62,7 +66,6 @@ struct segtree {
                 tree[x]._0[i] = bin[i] == '0';
             }
             tree[x].add = empty_string;
-            create(x);
             push(x);
             return;
         }
@@ -74,8 +77,6 @@ struct segtree {
         update(tree[x].l, l, r, lx, mx, bin);
         update(tree[x].r, l, r, mx, rx, bin);
 
-        create(tree[x].l);
-        create(tree[x].r);
         push(tree[x].l);
         push(tree[x].r);
 
@@ -96,7 +97,6 @@ struct segtree {
             for (int i = 0; i < len; i++) {
                 tree[x].add[i] = (bin[i] != tree[x].add[i] ? '1' : '0');
             }
-            create(x);
             push(x);
             return;
         }
@@ -108,8 +108,6 @@ struct segtree {
         xoring(tree[x].l, l, r, lx, mx, bin);
         xoring(tree[x].r, l, r, mx, rx, bin);
 
-        create(tree[x].l);
-        create(tree[x].r);
         push(tree[x].l);
         push(tree[x].r);
 
@@ -127,7 +125,6 @@ struct segtree {
     auto get(int x, int l, int r, int lx, int rx) {
         if (lx >= r || rx <= l) return empty_array;
         if (l <= lx && rx <= r) {
-            create(x);
             push(x);
             return tree[x]._1;
         }
@@ -145,9 +142,9 @@ struct segtree {
         return a;
     }
 
-    int get(int l, int r) {
+    long long get(int l, int r) {
         auto arr = get(0, l, r, 0, n);
-        int sum = 0;
+        long long sum = 0;
         for (int i = 0; i < len; i++) {
             sum += (1ll << (len - i - 1)) * arr[i];
         }
