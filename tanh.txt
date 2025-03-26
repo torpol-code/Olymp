@@ -1,4 +1,0 @@
-from math import *
-
-a = [1, 2, 3, 4, 5]
-print([(e ** i - e ** (-i) / (e ** i + e ** (-i))) for i in a])
